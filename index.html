@@ -14,12 +14,14 @@
         h2 {
             text-align: center;
         }
+
         #randomAnimalImages {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
         }
+
         #randomAnimalImages img {
             height: 350px;
         }
@@ -43,6 +45,13 @@
         let fetchDogImg = fetch("https://random.dog/woof.json");
         fetchDogImg.then(res =>
             res.json()).then(data => {
+                let url = data.url;
+                let urlParts = url.split(".");
+                let fileType = urlParts[urlParts.length - 1];
+                console.log(fileType)
+                if (fileType === "mp4") {
+                    location.reload();
+                }
                 var randomDogImage = document.getElementById("randomDogElement");
                 randomDogImage.innerHTML=`<img src=\"${data.url}\">`;
                 console.log(data.url);
