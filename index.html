@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to January 20, 2029</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 4vw;
+            font-family: sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+        }
+        #randomAnimalImages {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        #randomAnimalImages img {
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <h1>There are <span id="days-left"></span> days until January 20, 2029</h1>
+    <h2>While you wait, here are some random pictures of animals.</h2>
+    <div id="randomAnimalImages">
+        <div id="randomDogElement"></div>
+        <div id="randomCatElement"></div>
+        <div id="randomFoxElement"></div>
+    </div>
+    <script>
+        const oneDay = 24 * 60 * 60 * 1000;
+        const firstDate = new Date(2029, 0, 20);
+        const secondDate = new Date();
+        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay) + 1);
+        document.getElementById("days-left").innerText = diffDays;
+        var randomDogImage = document.createElement("IMG");
+        let fetchDogImg = fetch("https://random.dog/woof.json");
+        fetchDogImg.then(res =>
+            res.json()).then(data => {
+                var randomDogImage = document.getElementById("randomDogElement");
+                randomDogImage.innerHTML=`<img src=\"${data.url}\">`;
+        });
+        let fetchCatImg = fetch("https://api.thecatapi.com/v1/images/search");
+        fetchCatImg.then(res =>
+            res.json()).then(data => {
+                var randomCatImage = document.getElementById("randomCatElement");
+                randomCatImage.innerHTML=`<img src=\"${data[0].url}\">`;
+        });
+        let fetchFoxImg = fetch("https://randomfox.ca/floof/");
+        fetchFoxImg.then(res =>
+            res.json()).then(data => {
+                var randomFoxImage = document.getElementById("randomFoxElement");
+                randomFoxImage.innerHTML=`<img src=\"${data.image}\">`;
+        });
+        
+
+
+    </script>
+</body>
+</html>
