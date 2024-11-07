@@ -45,18 +45,21 @@
             res.json()).then(data => {
                 var randomDogImage = document.getElementById("randomDogElement");
                 randomDogImage.innerHTML=`<img src=\"${data.url}\">`;
+                console.log(data.url);
         });
         let fetchCatImg = fetch("https://api.thecatapi.com/v1/images/search");
         fetchCatImg.then(res =>
             res.json()).then(data => {
                 var randomCatImage = document.getElementById("randomCatElement");
                 randomCatImage.innerHTML=`<img src=\"${data[0].url}\">`;
+                console.log(data[0].url);
         });
         let fetchFoxImg = fetch("https://randomfox.ca/floof/");
         fetchFoxImg.then(res =>
             res.json()).then(data => {
                 var randomFoxImage = document.getElementById("randomFoxElement");
                 randomFoxImage.innerHTML=`<img src=\"${data.image}\">`;
+                console.log(data.image);
         });
         
 
