@@ -1,17 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown to January 20, 2029</title>
     <style>
+        :root {
+            --red: #E71D2E;
+            --blue: #164FD7;
+            --white: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--blue);
+            color: var(--white);
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 20px;
+        }
+
         h1 {
             text-align: center;
             font-size: 4vw;
             font-family: sans-serif;
+            color: var(--blue);
         }
 
         h2 {
+            padding: 20px;
             text-align: center;
         }
 
@@ -19,6 +43,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
@@ -27,15 +52,20 @@
         }
     </style>
 </head>
+
 <body>
-    <h1>There are <span id="days-left"></span> days until January 20, 2029</h1>
-    <h2>While you wait, here are some random pictures of animals.</h2>
-    <div id="randomAnimalImages">
-        <div id="randomDogElement"></div>
-        <div id="randomCatElement"></div>
-        <div id="randomFoxElement"></div>
-    </div>
-    <p style="text-align: center;">css coming soon. #NoEffortNovember</p>
+    <header>
+        <h1>There are <span id="days-left"></span> days until January 20, 2029</h1>
+    </header>
+    <main>
+        <h2>While you wait, here are some random pictures of animals.</h2>
+        <div id="randomAnimalImages">
+            <div id="randomDogElement"></div>
+            <div id="randomCatElement"></div>
+            <div id="randomFoxElement"></div>
+        </div>
+    </main>
+
     <script>
         const oneDay = 24 * 60 * 60 * 1000;
         const firstDate = new Date(2029, 0, 20);
@@ -54,26 +84,27 @@
                     location.reload();
                 }
                 var randomDogImage = document.getElementById("randomDogElement");
-                randomDogImage.innerHTML=`<img src=\"${data.url}\">`;
+                randomDogImage.innerHTML = `<img src=\"${data.url}\">`;
                 console.log(data.url);
-        });
+            });
         let fetchCatImg = fetch("https://api.thecatapi.com/v1/images/search");
         fetchCatImg.then(res =>
             res.json()).then(data => {
                 var randomCatImage = document.getElementById("randomCatElement");
-                randomCatImage.innerHTML=`<img src=\"${data[0].url}\">`;
+                randomCatImage.innerHTML = `<img src=\"${data[0].url}\">`;
                 console.log(data[0].url);
-        });
+            });
         let fetchFoxImg = fetch("https://randomfox.ca/floof/");
         fetchFoxImg.then(res =>
             res.json()).then(data => {
                 var randomFoxImage = document.getElementById("randomFoxElement");
-                randomFoxImage.innerHTML=`<img src=\"${data.image}\">`;
+                randomFoxImage.innerHTML = `<img src=\"${data.image}\">`;
                 console.log(data.image);
-        });
-        
+            });
+
 
 
     </script>
 </body>
+
 </html>
