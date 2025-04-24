@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read JSON and Display Random Object</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-4/5 max-w-md">
+        <h1 class="text-2xl font-semibold text-blue-600 mb-4 text-center">Random Lets Game it Out video</h1>
+        <div id="displayArea" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+            <p class="text-gray-700">Click the button to get a random video link.</p>
+        </div>
+        <div class="mt-6 flex justify-center">
+            <button id="loadAndDisplay" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 transition-colors duration-300">
+                Load and Display Random link
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const displayArea = document.getElementById('displayArea');
+        const loadAndDisplayButton = document.getElementById('loadAndDisplay');
+
+        loadAndDisplayButton.addEventListener('click', () => {
+            // Use fetch to get the JSON data
+            fetch('links.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 'data' is now the array of objects
+                    if (!Array.isArray(data) || data.length === 0) {
+                        displayArea.innerHTML = `<p class="text-red-500">Error: Invalid or empty JSON data.</p>`;
+                        return;
+                    }
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const randomObject = data[randomIndex];
+                    let displayContent = ``;
+                    if (randomObject.title && randomObject.link) {
+                        displayContent += `<p><a href="${randomObject.link}" class="text-blue-500 hover:underline">${randomObject.title}</a></p>`;
+                    } else {
+                        displayContent = `<p class="text-red-500">Error: Object is missing 'title' or 'link' properties.</p>`;
+                    }
+                    displayArea.innerHTML = displayContent;
+                })
+                .catch(error => {
+                    // Handle errors during the fetch or JSON parsing
+                    displayArea.innerHTML = `<p class="text-red-500">Error: ${error.message}</p>`;
+                    console.error('Error fetching or parsing JSON:', error);
+                });
+        });
+    </script>
+    <script>
+        // Create a dummy data.json file if it doesn't exist
+        const dummyData = [
+            { "title": "Example Title 1", "link": "https://www.example.com/1" },
+            { "title": "Example Title 2", "link": "https://www.example.com/2" },
+            { "title": "Example Title 3", "link": "https://www.example.com/3" },
+            { "title": "Example Title 4", "link": "https://www.example.com/4" },
+            { "title": "Example Title 5", "link": "https://www.example.com/5" }
+        ];
+
+        //Check if the file exists.  If it doesn't, create it.  This is for demonstration
+        fetch('data.json')
+            .then(response => {
+                if (!response.ok) {
+                    // File doesn't exist, create it
+                    fetch('https://httpbin.org/post', {
+                        method: 'POST',
+                        body: JSON.stringify(dummyData),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        //Check the response to see if the file was created.
+                        if (data && data.data) {
+                            console.log('Successfully created data.json:', data.data);
+                        } else {
+                             console.error('Failed to create data.json');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error creating data.json:', error);
+                    });
+                }
+            });
+    </script>
+</body>
+</html>
