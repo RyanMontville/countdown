@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read JSON and Display Random Object</title>
+    <title>Random LGIO Video</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,16 +13,40 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        #container {
+            max-width: 330px;
+            margin: 10px auto;
+            padding: 20px;
+        }
+
+        #container h1 {
+            text-align: center;
+            font-weight: 900;
+            font-size: 25px;
+        }
+
+        #container p {
+            text-align: center;
+        }
+
+        #container img {
+            display: block;
+            margin: auto;
+            width: 320;
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-4/5 max-w-md">
-        <h1 class="text-2xl font-semibold text-blue-600 mb-4 text-center">Random Lets Game it Out video</h1>
-        <div id="displayArea" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
-            <p class="text-gray-700">Click the button to get a random video link.</p>
+
+<body>
+    <div id="container">
+        <h1>Random LGIO video</h1>
+        <div id="displayArea">
+            <p>Click the button to get a random video link.</p>
         </div>
         <div class="mt-6 flex justify-center">
-            <button id="loadAndDisplay" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 transition-colors duration-300">
+            <button id="loadAndDisplay"
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 transition-colors duration-300">
                 Load and Display Random link
             </button>
         </div>
@@ -32,8 +57,7 @@
         const loadAndDisplayButton = document.getElementById('loadAndDisplay');
 
         loadAndDisplayButton.addEventListener('click', () => {
-            // Use fetch to get the JSON data
-            fetch('links.json')
+            fetch('videos.json')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -49,8 +73,10 @@
                     const randomIndex = Math.floor(Math.random() * data.length);
                     const randomObject = data[randomIndex];
                     let displayContent = ``;
-                    if (randomObject.title && randomObject.link) {
-                        displayContent += `<p><a href="${randomObject.link}" class="text-blue-500 hover:underline">${randomObject.title}</a></p>`;
+                    if (randomObject.title && randomObject.url) {
+                        displayContent += `<a href="${randomObject.url}"><img src="${randomObject.thumbnail}" alt="${randomObject.title}" /></a>`;
+                        displayContent += `<p><a href="${randomObject.url}" class="text-blue-500 hover:underline">${randomObject.title}</a></p>`;
+                        displayContent += `<p>Published: ${randomObject.published}`;
                     } else {
                         displayContent = `<p class="text-red-500">Error: Object is missing 'title' or 'link' properties.</p>`;
                     }
@@ -85,20 +111,21 @@
                             'Content-Type': 'application/json'
                         }
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        //Check the response to see if the file was created.
-                        if (data && data.data) {
-                            console.log('Successfully created data.json:', data.data);
-                        } else {
-                             console.error('Failed to create data.json');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error creating data.json:', error);
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            //Check the response to see if the file was created.
+                            if (data && data.data) {
+                                console.log('Successfully created data.json:', data.data);
+                            } else {
+                                console.error('Failed to create data.json');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error creating data.json:', error);
+                        });
                 }
             });
     </script>
 </body>
+
 </html>
